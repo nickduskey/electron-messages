@@ -1,15 +1,27 @@
 {
-  "name": "electron-boilerplate",
-  "productName": "Electron Boilerplate",
-  "description": "Starter for your Electron application",
-  "version": "0.0.0",
-  "private": true,
-  "author": "Mr. Gumby <mr.gumby@example.com>",
-  "copyright": "© 2017, Gumby inc.",
-  "homepage": "http://example.com",
+  "name": "electron-messages",
+  "productName": "Electron Messages",
+  "description": "Electron.js based client for Android Messages for Web",
+  "keywords": [
+    "electron",
+    "messages",
+    "android",
+    "web"
+  ],
+  "version": "0.1.0",
+  "author": "Nick Duskey <nickduskey@protonmail.com>",
   "main": "app/background.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickduskey/electron-messages.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nickduskey/electron-messages/issues",
+    "email": "nickduskey@protonmail.com"
+  },
+  "license": "MIT",
   "build": {
-    "appId": "com.example.electron-boilerplate",
+    "appId": "com.electron-messages.electron-boilerplate",
     "files": [
       "app/**/*",
       "node_modules/**/*",
