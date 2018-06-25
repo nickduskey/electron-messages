@@ -1,5 +1,4 @@
 # electron-messages
-======
 ![Android Messages Electron](https://raw.githubusercontent.com/nickduskey/electron-messages/master/media/androidmessagesicon.jpg)
 
 electron-messages is an **unofficial** electron wrapper for Android Messages for Web.
@@ -54,5 +53,4 @@ The building settings is in `./package.json` and additional configuration instru
 
 License
 ----
-**MIT** See License.md  
-**Free Software, Hell Yeah!**
+**MIT** See LICENSE
