@@ -1,6 +1,6 @@
 # electron-messages
 ======
-![Android Messages Electron](https://raw.githubusercontent.com/nickduskey/electron-messages/master/media/androidmessagesicon.jpg.png)
+![Android Messages Electron](https://raw.githubusercontent.com/nickduskey/electron-messages/master/media/androidmessagesicon.jpg)
 
 electron-messages is an **unofficial** electron wrapper for Android Messages for Web.
 
