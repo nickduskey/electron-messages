@@ -1,76 +1,72 @@
 os:
-  - linux
-  - osx
-
+- linux
+- osx
 sudo: required
 dist: trusty
 osx_image: xcode9.0
-
 language: node_js
 node_js: 8
-
 services:
-  - docker
-
+- docker
 env:
   global:
-    - ELECTRON_CACHE=$HOME/.cache/electron
-    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 cache:
   yarn: true
   directories:
-    - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
-
+  - node_modules
+  - "$HOME/.cache/electron"
+  - "$HOME/.cache/electron-builder"
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sleep 3; fi
-
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sleep 3; fi
 after_failure:
-  - curl -sL https://raw.githubusercontent.com/travis-ci/artifacts/master/install | bash
-  - artifacts upload $(git ls-files -o | grep -Fv -e node_modules -e dist -e app -e e2e)
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then artifacts upload /*.log); fi
-
-# Workaround for https://github.com/travis-ci/travis-ci/issues/6307, which
-# caused the following error on MacOS X workers:
-#
-# Warning, RVM 1.26.0 introduces signed releases and automated check of signatures when GPG software found.
-# /Users/travis/build.sh: line 109: shell_session_update: command not found
-#
+- curl -sL https://raw.githubusercontent.com/travis-ci/artifacts/master/install |
+  bash
+- artifacts upload $(git ls-files -o | grep -Fv -e node_modules -e dist -e app -e
+  e2e)
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then artifacts upload /*.log); fi
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -sSL https://rvm.io/mpapis.asc | gpg --import -; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get stable; fi
-
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -sSL https://rvm.io/mpapis.asc |
+  gpg --import -; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get stable; fi
 install:
-  - yarn install
-
+- yarn install
 script:
-  - node --version
-  - yarn --version
-  - |
-    if [ ! -z "$TRAVIS_TAG" ]; then
-      if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        yarn release
-      fi
-      if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        docker run --rm \
-          --env-file <(env | grep -iE 'NAME|DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CSC_|_TOKEN|_KEY|STRIP|BUILD_') \
-          --env ELECTRON_CACHE="/root/.cache/electron" \
-          --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
-          -v ${PWD}:/project \
-          -v ~/.cache/electron:/root/.cache/electron \
-          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-          electronuserland/builder:wine \
-          /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-      fi
+- node --version
+- yarn --version
+- |
+  if [ ! -z "$TRAVIS_TAG" ]; then
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      yarn release
     fi
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      docker run --rm \
+        --env-file <(env | grep -iE 'NAME|DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CSC_|_TOKEN|_KEY|STRIP|BUILD_') \
+        --env ELECTRON_CACHE="/root/.cache/electron" \
+        --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+        -v ${PWD}:/project \
+        -v ~/.cache/electron:/root/.cache/electron \
+        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+        electronuserland/builder:wine \
+        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
+    fi
+  fi
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
+- rm -rf $HOME/.cache/electron-builder/wine
 notifications:
   email:
     on_success: never
 on_failure: change
+deploy:
+  provider: releases
+  api_key:
+    secure: GGPTiMccK/2DID24o9XkhgWhPBysS3ti9iJTBEMv8feys8KpB4mRuoIHnqEWMobfwmI0T1r+vTOXO9wsRfMsPP8zXuurnjgU/KBPPDrgaIHJVtWz75w1K0TDCOmKPx3jSJWfMH9GJGp8fZRiDgZ5brgjhE/e8V4DL9HCxumCUn0i/RZCA6HsSQKaPh19gtX+8B02L51M3UIGq/V2vsYXhDQDXgEB8MS5mF99GmW6VHCpC60VGp3c+9Q+Km20QDX1Z7FLbp0O74JO7RYhVLgmDEheCUgiY1tlsvVS4XHy/biCrd3dfxoTjJt6pL4pCZlg7EMS0A8zZLUJaZIQXkZR5uAS1tTYHLCBEWrvObEO61MJZRybnAsg7HFO/XBDCg6SBdzAevEC8+lcO5XdiE/G2+Nn5VLt5fX+dh/ujXBGGl49OLE9S1ybQD8ZchrEcgfBRuoSFWgHNrtZO+Pdi+kotGw0fENUbUT6esUQpc1B5DnCaX7vZQbnXphpHD14cnqm2NLeANczMze+XBzBhJZCbOnv3HGEklZKgXX2Y510aIEQylQYls1z+rmW8s9nUuGujPwdNz716CI4ZDi6RLSLFt4MQppdcxdrFE0xVil4myUKlPD5waAR8bwFR6DcJ6U6GQPbFE27PCufxpWXTrvWflVvR46O75LALaew6ehptII=
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
+  on:
+    repo: nickduskey/electron-messages
+    tags: true
