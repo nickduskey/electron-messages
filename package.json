@@ -8,7 +8,7 @@
     "android",
     "web"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Nick Duskey <nickduskey@protonmail.com>",
   "main": "app/background.js",
   "homepage": "https://github.com/nickduskey/electron-messages",
@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "build": {
-    "app": "com.nickduskey.electron-messages",
+    "appId": "com.nickduskey.electron-messages",
     "files": [
       "app/**/*",
       "node_modules/**/*",

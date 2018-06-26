@@ -1,4 +1,5 @@
-# electron-messages
+# electron-messages [![Build Status](https://travis-ci.org/nickduskey/electron-messages.svg?branch=master)](https://travis-ci.org/nickduskey/electron-messages)
+
 ![Android Messages Electron](https://raw.githubusercontent.com/nickduskey/electron-messages/master/media/androidmessagesicon.jpg)
 
 electron-messages is an **unofficial** electron wrapper for Android Messages for Web.
