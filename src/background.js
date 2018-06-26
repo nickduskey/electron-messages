@@ -3,6 +3,8 @@ import url from 'url';
 import { app, ipcMain, Menu } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
+import isDev from 'electron-is-dev';
+
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
@@ -14,18 +16,18 @@ import env from 'env';
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 log.info('electron-messages starting...');
-
+log.info(pJson.build.appId);
 app.setAppUserModelId(pJson.build.appId);
 
 const setApplicationMenu = () => {
   const menus = [editMenuTemplate];
-  if (env.name !== 'production') {
+  if (isDev) {
     menus.push(devMenuTemplate);
   }
   Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
-if (env.name !== 'production') {
+if (isDev) {
   const userDataPath = app.getPath('userData');
   app.setPath('userData', `${userDataPath} (${env.name})`);
 }
@@ -49,7 +51,9 @@ app.on('ready', () => {
   }
   tray.build(mainWindow);
 
-  autoUpdater.checkForUpdates();
+  if (process.env.NODE_ENV === 'production') {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 autoUpdater.on('checking-for-update', () => {

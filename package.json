@@ -91,6 +91,7 @@
     "release": "webpack --config=build/webpack.app.config.js --env=production && electron-builder"
   },
   "dependencies": {
+    "electron-is-dev": "^0.3.0",
     "electron-log": "^2.2.15",
     "electron-updater": "^2.22.0",
     "fs-jetpack": "^1.0.0"
