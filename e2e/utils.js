@@ -1,11 +1,11 @@
-import electron from "electron";
-import { Application } from "spectron";
+import electron from 'electron';
+import { Application } from 'spectron';
 
 const beforeEach = function() {
   this.timeout(10000);
   this.app = new Application({
     path: electron,
-    args: ["."],
+    args: ['.'],
     startTimeout: 10000,
     waitTimeout: 10000
   });

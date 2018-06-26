@@ -3,27 +3,27 @@
 //
 // Usage:
 //
-// Every link with class ".js-external-link" will be opened in external browser.
-// <a class="js-external-link" href="http://google.com">google</a>
+// Every link with class '.js-external-link' will be opened in external browser.
+// <a class='js-external-link' href='http://google.com'>google</a>
 //
 // The same behaviour for many links can be achieved by adding
 // this class to any parent tag of an anchor tag.
-// <p class="js-external-link">
-//    <a href="http://google.com">google</a>
-//    <a href="http://bing.com">bing</a>
+// <p class='js-external-link'>
+//    <a href='http://google.com'>google</a>
+//    <a href='http://bing.com'>bing</a>
 // </p>
 
-import { shell } from "electron";
+import { shell } from 'electron';
 
 const supportExternalLinks = event => {
   let href;
   let isExternal = false;
 
   const checkDomElement = element => {
-    if (element.nodeName === "A") {
-      href = element.getAttribute("href");
+    if (element.nodeName === 'A') {
+      href = element.getAttribute('href');
     }
-    if (element.classList.contains("js-external-link")) {
+    if (element.classList.contains('js-external-link')) {
       isExternal = true;
     }
     if (href && isExternal) {
@@ -37,4 +37,4 @@ const supportExternalLinks = event => {
   checkDomElement(event.target);
 };
 
-document.addEventListener("click", supportExternalLinks, false);
+document.addEventListener('click', supportExternalLinks, false);
